@@ -7,9 +7,11 @@ from rest_framework import status
 from tutorials.models import Tutorial
 from tutorials.serializers import TutorialSerializer
 from rest_framework.decorators import api_view
+from rest_framework import response, decorators, permissions, status
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+@decorators.permission_classes([permissions.AllowAny])
 def tutorial_list(request):
     # GET list of tutorials, POST a new tutorial, DELETE all tutorials
     if request.method == 'GET':
