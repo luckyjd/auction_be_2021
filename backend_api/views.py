@@ -20,6 +20,12 @@ def product(request):
     elif request.method == 'POST':
         product_data = JSONParser().parse(request)
         product_data['product_auction_status'] = 0
+        products_total = Product.objects.all()
+        if products_total:
+            product_latest = products_total.order_by("-id")[0]
+            product_data['product_code'] = f"VNA{(product_latest.id + 1):07d}"
+        else:
+            product_data['product_code'] = f"VNA{1:07d}"
         product_serializer = ProductSerializer(data=product_data)
         if product_serializer.is_valid():
             product_serializer.save()

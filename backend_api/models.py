@@ -5,6 +5,7 @@ from django.utils import timezone
 
 class Product(models.Model):
     product_title = models.CharField(max_length=256, blank=True, null=True, default='')
+    product_code = models.CharField(max_length=256, unique=True, default='')
     deposit_start_time = models.DateTimeField(blank=True, null=True)
     view_start_time = models.DateTimeField(blank=True, null=True)
     auction_start_time = models.DateTimeField(blank=True, null=True)
@@ -22,6 +23,8 @@ class Product(models.Model):
     product_loc_wards = models.CharField(max_length=128, blank=True, null=True)
     product_loc_street = models.CharField(max_length=512, blank=True, null=True)
     product_detail_data = models.TextField(blank=True, null=True)
+
+
 
     product_owner_type = models.IntegerField(blank=True, null=True)  # 1 : ca nhan , 2 : doanh nghiep
     product_owner_name = models.CharField(max_length=256, blank=True, null=True)
