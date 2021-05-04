@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'tutorials',
     'corsheaders',
     'accounts',
-    'backend_api'
+    'backend_api',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': (
-            'rest_framework.permissions.AllowAny',  # make all endpoints private
+            'rest_framework.permissions.IsAuthenticated',  # make all endpoints private
         )
 }
 

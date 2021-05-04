@@ -6,6 +6,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+        # exclude = ('id',)
         # fields = ('id',
         #           'product_title',
         #           'deposit_start_time',
