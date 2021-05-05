@@ -23,6 +23,14 @@ class Product(models.Model):
     product_loc_wards = models.CharField(max_length=128, blank=True, null=True)
     product_loc_street = models.CharField(max_length=255, blank=True, null=True)
     product_detail_data = models.TextField(blank=True, null=True)
+    product_image_1 = models.FileField(upload_to='product/image/{0}'.format(uuid.uuid4()),
+                                                                   blank=True, null=True)
+    product_image_2 = models.FileField(upload_to='product/image/{0}'.format(uuid.uuid4()),
+                                       blank=True, null=True)
+    product_image_3 = models.FileField(upload_to='product/image/{0}'.format(uuid.uuid4()),
+                                       blank=True, null=True)
+    product_image_4 = models.FileField(upload_to='product/image/{0}'.format(uuid.uuid4()),
+                                       blank=True, null=True)
 
     product_owner_type = models.IntegerField(blank=True, null=True)  # 1 : ca nhan , 2 : doanh nghiep
     product_owner_name = models.CharField(max_length=255, blank=True, null=True)

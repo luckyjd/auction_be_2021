@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import uuid
 
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
@@ -9,6 +10,9 @@ from backend_api.serializers import ProductSerializer
 from rest_framework.decorators import api_view
 from rest_framework import response, decorators, permissions, status
 
+import base64
+from django.core.files.base import ContentFile
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 # @decorators.permission_classes([permissions.IsAuthenticated])
@@ -18,14 +22,24 @@ def product(request):
         products_serializer = ProductSerializer(products, many=True)
         return JsonResponse(products_serializer.data, safe=False)
     elif request.method == 'POST':
-        product_data = JSONParser().parse(request)
+        # product_data = JSONParser().parse(request)
+        product_data = request.data
         product_data['product_auction_status'] = 0
         products_total = Product.objects.all()
+        # create product_code
         if products_total:
             product_latest = products_total.order_by("-id")[0]
             product_data['product_code'] = f"VNA{(product_latest.id + 1):07d}"
         else:
             product_data['product_code'] = f"VNA{1:07d}"
+        #  add product_image
+        if product_data['product_images']:
+            data_image_base64 = product_data['product_images'][0]['path']
+            format, imgstr = data_image_base64.split(';base64,')
+            ext = format.split('/')[-1]
+
+            data_image = ContentFile(base64.b64decode(imgstr), name=(str(uuid.uuid4()) + '.' + ext))
+            product_data['product_image_1'] = data_image
         product_serializer = ProductSerializer(data=product_data)
         if product_serializer.is_valid():
             product_serializer.save()

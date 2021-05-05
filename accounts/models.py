@@ -35,9 +35,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     # username = None
-    email = models.CharField(max_length=128, unique=True)
+    phone = models.CharField(max_length=128, unique=True)
     is_full_info = models.BooleanField(default=0)
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
