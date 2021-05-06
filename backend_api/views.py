@@ -63,6 +63,10 @@ def product(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, pk):
+    product = Product.objects.get(pk=pk)
+    if product:
+        product_serializer = ProductSerializer(product)
+        return JsonResponse(product_serializer.data, safe=False)
     return JsonResponse({'message': 'The product does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 #

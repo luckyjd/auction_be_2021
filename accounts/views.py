@@ -17,26 +17,32 @@ from .models import User, UserManager
 @decorators.permission_classes([permissions.AllowAny])
 def create_account(request):
     data = JSONParser().parse(request)
-    email = data.get('email')
-    password = data.get('password')
-    if User.objects.filter(email=email).exists():
+    phone = data.get('phone', None)
+    password = data.get('password', None)
+    if phone and password:
+        if User.objects.filter(phone=phone).exists():
+            return JsonResponse({
+                        'error': True,
+                        'message': "Phone existed"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        user = User(phone=phone)
+        user.set_password(password)
+        user.save()
         return JsonResponse({
-                    'error': True,
-                    'message': "Email existed"
-                }, status=status.HTTP_400_BAD_REQUEST)
-    user = User(email=email)
-    user.set_password(password)
-    user.save()
-    return JsonResponse({
-                'error': None,
-                'message': "Success created"
-            }, status=status.HTTP_201_CREATED)
+                    'error': None,
+                    'message': "Success created"
+                }, status=status.HTTP_201_CREATED)
+    else:
+        return JsonResponse({
+            'error': True,
+            'message': "Phone and password are required"
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('email', 'username')
+        fields = ('phone', 'username')
 
 
 class UserAPIView(RetrieveAPIView):
@@ -45,3 +51,5 @@ class UserAPIView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
