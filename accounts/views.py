@@ -4,7 +4,7 @@ from rest_framework import response, decorators, permissions, status
 from rest_framework.parsers import JSONParser
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import serializers
 
 from django.http.response import JsonResponse
@@ -39,10 +39,21 @@ def create_account(request):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+@decorators.permission_classes([permissions.AllowAny])
+def get_user(request):
+    limit = request.query_params.get('limit', 10)
+    offset = request.query_params.get('offset', 0)
+
+    users = User.objects.all()[int(offset):(int(offset) + int(limit))]
+    users_serializer = UserSerializer(users, many=True)
+    return JsonResponse(users_serializer.data, safe=False)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('phone', 'username')
+        fields = ('phone', 'user_type', 'is_full_info', 'is_active', 'first_name', 'last_name', 'email', 'dob')
 
 
 class UserAPIView(RetrieveAPIView):
@@ -51,5 +62,6 @@ class UserAPIView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
 
 

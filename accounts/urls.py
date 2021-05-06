@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),      # new
     path('api/account/', views.create_account, name='create_user'),
     path('api/user/', views.UserAPIView.as_view(), name='get_user'),
+    path('api/users/', views.get_user, name='get_list_user'),
 ]

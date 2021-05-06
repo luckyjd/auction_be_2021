@@ -18,11 +18,12 @@ from django.core.files.base import ContentFile
 # @decorators.permission_classes([permissions.IsAuthenticated])
 def product(request):
     if request.method == 'GET':
-        if request.query_params.get('size', None):
-            size = request.query_params.get('size', None)
-            products = Product.objects.order_by('-created_time')[:int(size)]
-            products_serializer = ProductSerializer(products, many=True)
-            return JsonResponse(products_serializer.data, safe=False)
+        limit = request.query_params.get('limit', 10)
+        offset = request.query_params.get('offset', 0)
+        order = request.query_params.get('oder', '-created_time')
+        products = Product.objects.order_by(order)[int(offset):(int(offset) + int(limit))]
+        products_serializer = ProductSerializer(products, many=True)
+        return JsonResponse(products_serializer.data, safe=False)
     elif request.method == 'POST':
         # product_data = JSONParser().parse(request)
         product_data = request.data
