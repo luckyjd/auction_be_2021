@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import uuid
-
+import json
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
@@ -20,8 +20,11 @@ def product(request):
     if request.method == 'GET':
         limit = request.query_params.get('limit', 10)
         offset = request.query_params.get('offset', 0)
+        filter = request.query_params.get('filter', '')
+        if filter:
+            filter = json.loads(filter)
         order = request.query_params.get('oder', '-created_time')
-        products = Product.objects.order_by(order)[int(offset):(int(offset) + int(limit))]
+        products = Product.objects.filter(**filter).order_by(order)[int(offset):(int(offset) + int(limit))]
         products_serializer = ProductSerializer(products, many=True)
         return JsonResponse(products_serializer.data, safe=False)
     elif request.method == 'POST':
