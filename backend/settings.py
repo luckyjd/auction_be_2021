@@ -70,7 +70,7 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8081',
+    'http://localhost:8081', 'http://ec2-54-169-161-14.ap-southeast-1.compute.amazonaws.com:81'
 )
 
 ROOT_URLCONF = 'backend.urls'
