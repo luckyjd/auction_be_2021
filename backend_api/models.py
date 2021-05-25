@@ -63,3 +63,4 @@ class Product(models.Model):
         return self.product_title
 
 
+# class

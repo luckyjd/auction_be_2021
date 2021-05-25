@@ -26,7 +26,7 @@ SECRET_KEY = 't4mxr99#hrm#omsck-w#(ct%89m)$d@12o#-5mdtib4@&%7i7y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-54-169-161-14.ap-southeast-1.compute.amazonaws.com', 'localhost']
+ALLOWED_HOSTS = ['ec2-54-169-161-14.ap-southeast-1.compute.amazonaws.com', '127.0.0.1']
 
 
 # Application definition
@@ -178,3 +178,4 @@ SIMPLE_JWT = {
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
